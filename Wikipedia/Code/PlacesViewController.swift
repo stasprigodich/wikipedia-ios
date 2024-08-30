@@ -314,6 +314,27 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         }
     }
     
+    @objc func showLocation(with coordinate: CLLocationCoordinate2D) {
+        let span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+        let coordinateRegion = MKCoordinateRegion(center: coordinate, span: span)
+        let region = self.region(thatFits: coordinateRegion)
+
+        let searchResult = MWKSearchResult(
+            articleID: 0,
+            revID: 0,
+            title: nil,
+            displayTitle: nil,
+            displayTitleHTML: nil,
+            wikidataDescription: nil,
+            extract: nil,
+            thumbnailURL: nil, 
+            index: nil,
+            titleNamespace: nil,
+            location: nil
+        )
+        currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: nil, searchResult: searchResult, siteURL: nil)
+    }
+    
     func updateShouldShowAllImagesIfNecessary() {
         let visibleAnnotations = mapView.visibleAnnotations
         var visibleArticleCount = 0
